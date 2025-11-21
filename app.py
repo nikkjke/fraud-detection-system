@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-
 import joblib
 
 @st.cache_data
@@ -56,12 +55,12 @@ month = st.slider("Transaction Month", 1, 12, 6)
 
 categorical_col = ["merchant", "category", "gender", "job"]
 
-if "show_fraud_prediction" not in st.session_state:
-    st.session_state.show_fraud_prediction = False
-if "show_legit_prediction" not in st.session_state:
-    st.session_state.show_legit_prediction = False
-if "show_manual_prediction" not in st.session_state:
-    st.session_state.show_manual_prediction = False
+if "fraud_prediction" not in st.session_state:
+    st.session_state.fraud_prediction = False
+if "legit_prediction" not in st.session_state:
+    st.session_state.legit_prediction = False
+if "manual_prediction" not in st.session_state:
+    st.session_state.manual_prediction = False
 
 col1, col2, col3 = st.columns(3, gap="large")
 
@@ -76,13 +75,13 @@ with col1:
             proba = model.predict_proba(input_data)[0, 1]
             result = ":green[Fraudulent Transaction]" if proba > 0.5 else ":red[Legitimate Transaction]"
             
-            st.session_state.show_manual_prediction = True
+            st.session_state.manual_prediction = True
             st.session_state.manual_result = result
             st.session_state.manual_proba = proba
         else:
             st.error("Please fill all required fields")
 
-if st.session_state.show_manual_prediction:
+if st.session_state.manual_prediction:
     st.subheader(f"Prediction: {st.session_state.manual_result}")
     if st.session_state.manual_proba >= 0.5:
         st.subheader(f"Fraud Probability: :green[{st.session_state.manual_proba:.3f}]")
@@ -100,11 +99,11 @@ with col2:
         pred = model.predict_proba(fraud_case_encoded)[0, 1]
         result = ":green[Fraudulent Transaction]" if pred > 0.5 else ":red[Legitimate Transaction]"
         
-        st.session_state.show_fraud_prediction = True
+        st.session_state.fraud_prediction = True
         st.session_state.fraud_pred = pred
         st.session_state.fraud_result = result
         
-if st.session_state.show_fraud_prediction:
+if st.session_state.fraud_prediction:
     st.markdown('<h3><u>Fraud Input Data:</u></h3>', unsafe_allow_html=True)
     fraud_case_display = st.session_state.fraud_case.copy()
     fraud_case_display['amt'] = fraud_case_display['amt'].map('{:.2f}'.format)
@@ -127,11 +126,11 @@ with col3:
         pred = model.predict_proba(legit_case_encoded)[0, 1]
         result = ":green[Fraudulent Transaction]" if pred > 0.5 else ":red[Legitimate Transaction]"
         
-        st.session_state.show_legit_prediction = True
+        st.session_state.legit_prediction = True
         st.session_state.legit_pred = pred
         st.session_state.legit_result = result
 
-if st.session_state.show_legit_prediction:
+if st.session_state.legit_prediction:
     st.markdown('<h3><u>Legit Input Data:</u></h3>', unsafe_allow_html=True)
     legit_case_display = st.session_state.legit_case.copy()
     legit_case_display['amt'] = legit_case_display['amt'].map('{:.2f}'.format)
@@ -142,3 +141,4 @@ if st.session_state.show_legit_prediction:
         st.subheader(f"Fraud Probability: :green[{pred:.3f}]")
     else:
         st.subheader(f"Fraud Probability: :red[{pred:.3f}]")
+
