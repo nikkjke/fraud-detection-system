@@ -35,8 +35,8 @@ The model employs Random Forest classification with SMOTE (Synthetic Minority Ov
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/nikkjke/fraud-detection-app.git
-   cd credit-card-fraud-detection
+   git clone https://github.com/nikkjke/fraud-detection-system.git
+   cd fraud-detection-system
    ```
 
 2. **Create a virtual environment** (recommended)
@@ -106,7 +106,7 @@ The project uses credit card transaction data with the following structure:
 ## Project Structure
 
 ```
-credit-card-fraud-detection/
+fraud-detection-system/
 ├── app.py                          # Main Streamlit application
 ├── credit_card_notebook.ipynb      # Model training and analysis notebook
 ├── credit_card_transactions.csv    # Main dataset (download separately)
