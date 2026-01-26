@@ -152,7 +152,7 @@ def create_fraud_gauge(probability):
     )
 
     fig.add_annotation(
-        text=f"<b>{probability * 100:.3f}%</b>",
+        text=f"<b>{probability * 100:.1f}%</b>",
         x=0.5,
         y=0.52,
         font=dict(size=60, color=color, family="Roboto"),
